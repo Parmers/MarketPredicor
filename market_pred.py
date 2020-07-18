@@ -130,6 +130,8 @@ all_mid_data = np.concatenate([train_data,test_data],axis=0)
 
 # ====================== LSTM Training ==================================
 
+# //====================== Data Generator class ==================================//
+
 class DataGeneratorSeq(object):
 
     def __init__(self, prices, batch_size, num_unroll):
@@ -174,6 +176,8 @@ class DataGeneratorSeq(object):
             self._cursor[b] = np.random.randint(0, min((b + 1) * self._segments, self._prices_length - 1))
 
 
+# //====================== Hyper-Parameters ==================================//
+
 dg = DataGeneratorSeq(train_data, 5, 5)
 u_data, u_labels = dg.unroll_batches()
 
@@ -183,3 +187,13 @@ for ui,(dat,lbl) in enumerate(zip(u_data,u_labels)):
     lbl_ind = lbl
     print('\tInputs: ',dat )
     print('\n\tOutput:',lbl)
+
+
+D = 1 # Dimensionality of the data. Since our data is 1-D this would be 1
+num_unrollings = 50 # Number of time steps you look into the future.
+batch_size = 500 # Number of samples in a batch
+num_nodes = [200,200,150] # Number of hidden nodes in each layer of the deep LSTM stack we're using
+n_layers = len(num_nodes) # number of layers
+dropout = 0.2 # dropout amount
+
+tf.reset_default_graph() # This is important in case you run this multiple times
