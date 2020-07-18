@@ -196,4 +196,14 @@ num_nodes = [200,200,150] # Number of hidden nodes in each layer of the deep LST
 n_layers = len(num_nodes) # number of layers
 dropout = 0.2 # dropout amount
 
+# //====================== Input and Output ==================================//
+
 tf.reset_default_graph() # This is important in case you run this multiple times
+
+# Input data.
+train_inputs, train_outputs = [],[]
+
+# You unroll the input over time defining placeholders for each time step
+for ui in range(num_unrollings):
+    train_inputs.append(tf.placeholder(tf.float32, shape=[batch_size,D],name='train_inputs_%d'%ui))
+    train_outputs.append(tf.placeholder(tf.float32, shape=[batch_size,1], name = 'train_outputs_%d'%ui))
